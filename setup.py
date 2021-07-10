@@ -11,7 +11,8 @@ setup(
     download_url='https://github.com/jfuruness/lib_yt_spam_remover.git',
     keywords=['Furuness', 'Youtube', 'Spam'],
     install_requires=[
-        "google-api-python-client"
+        "google-api-python-client",
+        "tqdm"
         ],
     classifiers=[
         'Environment :: Console',
