@@ -3,6 +3,7 @@ import textwrap
 class Comment:
     def __init__(self, raw: dict, parent=None):
         self.raw: dict = raw
+        self.spam = None
 
     @property
     def yt_id(self):
@@ -34,7 +35,7 @@ class Comment:
         """Returns original text"""
         return self.raw["snippet"]["textOriginal"]
 
-    def __str__(self):
+    def __str__(self, **kwargs):
         text_wrapped = textwrap.fill(self.og_text, 110)
         ogtext = ""
         for i, line in enumerate(text_wrapped.split("\n")):
@@ -57,13 +58,14 @@ class TopLevelComment(Comment):
             for reply_raw in yt_api_response["replies"]["comments"]:
                 self.replies.append(Reply(self, reply_raw))
 
-    def __str__(self):
+    def __str__(self, replies=True):
         string = super(TopLevelComment, self).__str__()
         string += "\n"
-        if self.replies:
-            string += "\treplies:\n"
-        for reply in self.replies:
-            string += "\t\t" + str(reply).replace("\t", "\t\t\t") + "\n"
+        if replies:
+            if self.replies:
+                string += "\treplies:\n"
+            for reply in self.replies:
+                string += "\t\t" + str(reply).replace("\t", "\t\t\t") + "\n"
         return string
 
 class Reply(Comment):

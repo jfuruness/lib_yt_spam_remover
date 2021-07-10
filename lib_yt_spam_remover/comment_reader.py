@@ -17,9 +17,7 @@ class CommentReader:
         top_level_comments = []
         fnames = os.listdir(Downloader.data_dir)
         for fname in tqdm(fnames, total=len(fnames), desc="Reading comments"):
-            if fname == self.path:
-                continue
-            else:
+            if ".json" in fname:
                 with open(os.path.join(Downloader.data_dir, fname), "r") as f:
                     response = json.load(f)
                     for comment in response["items"]:
