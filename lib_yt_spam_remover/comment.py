@@ -5,6 +5,10 @@ class Comment:
         self.raw: dict = raw
         self.spam = None
 
+#############################
+# Properties related to API #
+#############################
+
     @property
     def yt_id(self):
         return self.raw["id"]
@@ -34,6 +38,67 @@ class Comment:
     def og_text(self):
         """Returns original text"""
         return self.raw["snippet"]["textOriginal"]
+
+########################
+# Properties we define #
+########################
+
+    @property
+    def num_letters(self):
+        """Number of letters in the text"""
+
+        return sum(x.isalpha() for x in self.og_text)
+
+    @property
+    def num_numbers(self):
+        """Number of numbers in the text"""
+
+        return sum(x.isdigit() for x in self.og_text)
+
+    @property
+    def num_not_numbers_letters(self):
+        """Number of chars that are not letters or numbers"""
+
+        return sum(not (x.isdigit() or x.isalpha()) for x in self.og_text)
+
+    @property
+    def percent_letters_numbers(self):
+        """Remove all spaces. letters + numbers / len"""
+
+        normal_chars = self.num_letters + self.num_numbers
+        return normal_chars / len(self.og_text.replace(" ", ""))
+
+    @property
+    def percent_letters(self):
+        """Removes all spaces. letters / len"""
+        return self.num_letters / len(self.og_text.replace(" ", ""))
+
+    @property
+    def num_non_ascii(self):
+        
+        return len(self.non_ascii)
+
+    @property
+    def non_ascii(self):
+        ascii_safe = set(["’", "”", "“"])
+        return "".join([x for x in self.og_text if (0 > ord(x) or 127 < ord(x)) and x not in ascii_safe])
+        
+    @property
+    def ten_nums_next_to_each_other(self):
+        """Strip everything but letters/nums. returns True if 10 in a row"""
+
+        og_stripped = "".join(x for x in self.og_text
+                              if (x.isdigit() or x.isalpha()))
+        total_count_in_a_row = 0
+        for c in og_stripped:
+            if c.isdigit():
+                total_count_in_a_row += 1
+            else:
+                total_count_in_a_row = 0
+
+            if total_count_in_a_row >= 10:
+                return True
+        return False
 
     def __str__(self, **kwargs):
         text_wrapped = textwrap.fill(self.og_text, 110)
