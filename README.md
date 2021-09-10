@@ -6,6 +6,10 @@ Install:
 cd lib_yt_spam_remover
 python3 setup.py develop
 ```
+To run (after install): (See __main__.py)
+```
+lib_yt_spam_remover
+```
 
 Todo:
 * Low hanging fruit first. Get rid of obvious spam
