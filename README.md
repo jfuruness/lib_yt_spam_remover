@@ -1,5 +1,12 @@
 Docs needed!
 
+Install:
+
+```
+cd lib_yt_spam_remover
+python3 setup.py develop
+```
+
 Todo:
 * Low hanging fruit first. Get rid of obvious spam
 * Get rid of spam relating to telegram, whatsapp, anything with numbers
